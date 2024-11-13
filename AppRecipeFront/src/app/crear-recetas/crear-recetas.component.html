@@ -1,0 +1,82 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="card" style="width: 60rem;">
+      <div class="row g-0">
+        <div class="col-md-4">
+          <img [src]="imageUrl || 'https://via.placeholder.com/300'" alt="Previsualización de imagen" class="img-fluid rounded-start">
+        </div>
+
+        <div class="col-md-8">
+          <div class="card-body">
+            <form (ngSubmit)="submitRecipe()">
+              <!-- Título de la receta -->
+              <div class="mb-3">
+                <label for="recipeTitle" class="form-label">Título de la receta</label>
+                <input type="text" class="form-control" id="recipeTitle" [(ngModel)]="recipe.title" name="title" placeholder="Ingresa el título" required>
+              </div>
+
+              <!-- Ingredientes -->
+              <div class="mb-3">
+                <label for="recipeIngredients" class="form-label">Ingredientes</label>
+                <div class="input-group">
+                  <input type="text" class="form-control" [(ngModel)]="newIngredient" name="newIngredient" placeholder="Añadir ingrediente" required>
+                  <button class="btn btn-primary" type="button" (click)="addIngredient()">Agregar</button>
+                </div>
+                <div class="ingredient-list" style="max-height: 120px; overflow-y: auto;">
+                  <ol class="mt-2">
+                    <li *ngFor="let ingredient of recipe.ingredients; let i = index">
+                      <span *ngIf="editingIngredientIndex !== i; else editTemplate">{{ ingredient }}</span>
+                      <ng-template #editTemplate>
+                        <input type="text" [(ngModel)]="tempIngredient" name="ingredient{{i}}" (blur)="updateIngredient(i)" />
+                      </ng-template>
+                      <button type="button" class="btn btn-secondary btn-sm" (click)="toggleEditingIngredient(i, ingredient)">
+                        <i class="bi" [ngClass]="editingIngredientIndex === i ? 'bi-check-lg' : 'bi-pencil'"></i>
+                      </button>
+                      <button type="button" class="btn btn-danger btn-sm" (click)="removeIngredient(i)">
+                        <i class="bi bi-trash3"></i>
+                      </button>
+                    </li>
+                  </ol>
+                </div>
+              </div>
+
+              <!-- Instrucciones de preparación -->
+              <div class="mb-3">
+                <label for="recipeInstructions" class="form-label">Instrucciones de preparación</label>
+                <div class="input-group">
+                  <input type="text" class="form-control" [(ngModel)]="newInstruction" name="newInstruction" placeholder="Añadir instrucción" required>
+                  <button class="btn btn-primary" type="button" (click)="addInstruction()">Agregar</button>
+                </div>
+                <div class="instruction-list" style="max-height: 120px; overflow-y: auto;">
+                  <ol class="mt-2">
+                    <li *ngFor="let instruction of recipe.instructions; let i = index">
+                      <span *ngIf="editingInstructionIndex !== i; else editInstructionTemplate">{{ instruction }}</span>
+                      <ng-template #editInstructionTemplate>
+                        <input type="text" [(ngModel)]="tempInstruction" name="instruction{{i}}" (blur)="updateInstruction(i)" />
+                      </ng-template>
+                      <button type="button" class="btn btn-secondary btn-sm" (click)="toggleEditingInstruction(i, instruction)">
+                        <i class="bi" [ngClass]="editingInstructionIndex === i ? 'bi-check-lg' : 'bi-pencil'"></i>
+                      </button>
+                      <button type="button" class="btn btn-danger btn-sm" (click)="removeInstruction(i)">
+                        <i class="bi bi-trash3"></i>
+                      </button>
+                    </li>
+                  </ol>
+                </div>
+              </div>
+
+              <!-- Enlace de imagen -->
+              <div class="mb-3">
+                <label for="recipeImageUrl" class="form-label">Link de imagen</label>
+                <input type="text" class="form-control" id="recipeImageUrl" [(ngModel)]="imageUrl" name="imageUrl" placeholder="Pega el enlace de la imagen de Google Images" required>
+              </div>
+
+              <!-- Botón de Guardar -->
+              <button type="submit" class="btn btn-primary">Guardar receta</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

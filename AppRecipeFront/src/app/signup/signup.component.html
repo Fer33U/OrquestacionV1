@@ -1,0 +1,41 @@
+<!-- src/app/signup/signup.component.html -->
+<div class="d-flex justify-content-center align-items-start vh-100 mt-5">
+  <div class="card" style="width: 48rem;">
+    <div class="card-body">
+      <h5 class="card-title text-center mb-4">Registro de Usuario</h5>
+
+      <form (ngSubmit)="registrarUsuario()">
+        <div class="mb-3">
+          <label for="username" class="form-label">Nombre de usuario</label>
+          <input type="text" class="form-control" id="username" [(ngModel)]="nombreUser" name="nombreUser" placeholder="Ingresa tu nombre de usuario" required>
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Correo electrónico</label>
+          <input type="email" class="form-control" id="email" [(ngModel)]="email" name="email" placeholder="Ingresa tu correo electrónico" required>
+        </div>
+        <div class="mb-3 position-relative">
+          <label for="password" class="form-label">Contraseña</label>
+          <input type="password" class="form-control" id="password" [(ngModel)]="password" name="password" placeholder="Ingresa tu contraseña" required [type]="passwordVisible ? 'text' : 'password'">
+          <button type="button" class="btn btn-light position-absolute" style="right: 10px; top: 30px; border: none; cursor: pointer;" (click)="togglePasswordVisibility()">
+            <i class="bi" [ngClass]="passwordVisible ? 'bi-eye-slash' : 'bi-eye'"></i>
+          </button>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Registrarse</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true" [ngClass]="{'show': alertMessage}" [style.display]="alertMessage ? 'block' : 'none'">
+    <div class="modal-dialog">
+      <div class="modal-content" [ngClass]="{'bg-success': alertMessage === 'El registro fue exitoso.', 'bg-danger': alertMessage === 'Ocurrió un error, revisar los campos o intentar más tarde.'}">
+        <div class="modal-body text-center text-white">
+          {{ alertMessage }}
+        </div>
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="closeModal()">X</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

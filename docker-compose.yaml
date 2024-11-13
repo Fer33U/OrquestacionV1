@@ -1,0 +1,54 @@
+services:
+  # Servicio para el frontend
+  frontend:
+    build:
+      context: ./AppRecipeFront
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    deploy:
+      resources:
+        limits:
+          cpus: "0.20"          # Limitacion del 20% de CPU
+          memory: 200M          # Limitacion de 200 MB de memoria
+        reservations:
+          cpus: "0.10"          # Reserva de 10% de CPU
+          memory: 100M          # Reserva de 100 MB de memoria
+
+  # Servicio para el backend
+  backend:
+    build:
+      context: ./AppRecipeBack-develop
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/apprecipe
+    depends_on:
+      - mongo
+    command: npm run dev
+    deploy:
+      resources:
+        limits:
+          cpus: "0.20"          # Limitacion del 20% de CPU
+          memory: 300M          # Limitacion de 300 MB de memoria
+        reservations:
+          cpus: "0.20"          # Reserva de 20% de CPU
+          memory: 200M          # Reserva de 200 MB de memoria
+
+  # Servicio para MongoDB
+  mongo:
+    image: mongo:4.4
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data/db:/data/db
+    deploy:
+      resources:
+        limits:
+          cpus: "0.30"          # Limitacion del 30% de CPU
+          memory: 300M          # Limitacion del 300 MB de memoria
+        reservations:
+          cpus: "0.25"          # Reserva de 25% de CPU
+          memory: 150M          # Reserva de 150 MB de memoria
